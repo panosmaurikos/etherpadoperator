@@ -38,6 +38,8 @@ type PodSpec struct {
 	Args           []string               `json:"args,omitempty"`
 	ContainerPorts []corev1.ContainerPort `json:"containerPorts,omitempty"`
 	Env            []corev1.EnvVar        `json:"env,omitempty"`
+	VolumeMounts   []corev1.VolumeMount   `json:"volumeMounts,omitempty"`
+	Volumes        []corev1.Volume        `json:"volumes,omitempty"`
 }
 
 // EtherpadInstanceStatus defines the observed state of EtherpadInstanceStatus

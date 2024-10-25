@@ -174,13 +174,15 @@ func (r *EtherpadInstanceReconciler) Reconcile(ctx context.Context, req ctrl.Req
 				},
 				Spec: corev1.PodSpec{
 					Containers: []corev1.Container{{
-						Name:    podSpec.Name,
-						Image:   podSpec.Image,
-						Command: podSpec.Command,
-						Args:    podSpec.Args,
-						Ports:   podSpec.ContainerPorts,
-						Env:     podSpec.Env,
+						Name:         podSpec.Name,
+						Image:        podSpec.Image,
+						Command:      podSpec.Command,
+						Args:         podSpec.Args,
+						Ports:        podSpec.ContainerPorts,
+						Env:          podSpec.Env,
+						VolumeMounts: podSpec.VolumeMounts,
 					}},
+					Volumes: podSpec.Volumes,
 				},
 			}
 
