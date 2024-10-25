@@ -9,6 +9,23 @@ spec:
       containerPorts:
         - containerPort: 9001
           protocol: TCP
+      volumeMounts:
+        - name: etherpad-storage
+          mountPath: /opt/etherpad-lite/var
+        - name: etherpad-settings
+          mountPath: /opt/etherpad-lite/settings.json
+          subPath: settings.json
+      volumes:
+        - name: etherpad-storage
+          persistentVolumeClaim:
+            claimName: etherpad-pvc
+        - name: etherpad-settings
+          configMap:
+            name: etherpad-config
+            items:
+              - key: settings.json
+                path: settings.json
+
     - name: mysql
       image: mysql:8
       env:
@@ -23,8 +40,10 @@ spec:
       containerPorts:
         - containerPort: 3306
           protocol: TCP
-  configMap:
-    name: etherpad-config
-    items:
-      - key: settings.json
-        path: settings.json
+      volumeMounts:
+        - name: mysql-storage
+          mountPath: /var/lib/mysql
+      volumes:
+        - name: mysql-storage
+          persistentVolumeClaim:
+            claimName: mysql-pvc
