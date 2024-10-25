@@ -1,0 +1,30 @@
+apiVersion: etherpad.etherpadinstance.io/v1alpha1
+kind: EtherpadInstance
+metadata:
+  name: etherpadinstance-sample
+spec:
+  pods:
+    - name: etherpad
+      image: etherpad/etherpad:latest
+      containerPorts:
+        - containerPort: 9001
+          protocol: TCP
+    - name: mysql
+      image: mysql:8
+      env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root_password
+        - name: MYSQL_DATABASE
+          value: etherpad_db
+        - name: MYSQL_USER
+          value: etherpad_user
+        - name: MYSQL_PASSWORD
+          value: etherpad_password
+      containerPorts:
+        - containerPort: 3306
+          protocol: TCP
+  configMap:
+    name: etherpad-config
+    items:
+      - key: settings.json
+        path: settings.json
