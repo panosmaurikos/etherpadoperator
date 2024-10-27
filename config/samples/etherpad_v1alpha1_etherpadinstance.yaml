@@ -1,0 +1,51 @@
+apiVersion: etherpad.etherpadinstance.io/v1alpha1
+kind: EtherpadInstance
+metadata:
+  name: etherpadinstance-sample
+  namespace: default
+spec:
+  deployments:
+    - name: etherpad
+      image: etherpad/etherpad:latest
+      replicas: 1
+      containerPorts:
+        - containerPort: 9001
+          protocol: TCP
+      volumeMounts:
+        - mountPath: /opt/etherpad-lite/var
+          name: etherpad-storage
+        - mountPath: /opt/etherpad-lite/settings.json
+          name: etherpad-settings
+          subPath: settings.json
+      volumes:
+        - name: etherpad-storage
+          persistentVolumeClaim:
+            claimName: etherpad-pvc
+        - name: etherpad-settings
+          configMap:
+            name: etherpad-settings
+      servicePort: 9001  # Service port for Etherpad
+
+    - name: mysql
+      image: mysql:8
+      replicas: 1
+      containerPorts:
+        - containerPort: 3306
+          protocol: TCP
+      env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root_password
+        - name: MYSQL_DATABASE
+          value: etherpad_db
+        - name: MYSQL_USER
+          value: etherpad_user
+        - name: MYSQL_PASSWORD
+          value: etherpad_password
+      volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: mysql-storage
+      volumes:
+        - name: mysql-storage
+          persistentVolumeClaim:
+            claimName: mysql-pvc
+      servicePort: 3306  # Service port for MySQL

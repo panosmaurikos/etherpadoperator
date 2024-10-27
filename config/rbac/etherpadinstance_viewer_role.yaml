@@ -1,0 +1,23 @@
+# permissions for end users to view etherpadinstances.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: etherpadoperator
+    app.kubernetes.io/managed-by: kustomize
+  name: etherpadinstance-viewer-role
+rules:
+- apiGroups:
+  - etherpad.etherpadinstance.io
+  resources:
+  - etherpadinstances
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - etherpad.etherpadinstance.io
+  resources:
+  - etherpadinstances/status
+  verbs:
+  - get

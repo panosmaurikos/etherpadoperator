@@ -1,0 +1,4 @@
+## Append samples of your project ##
+resources:
+- etherpad_v1alpha1_etherpadinstance.yaml
+# +kubebuilder:scaffold:manifestskustomizesamples
